@@ -1,0 +1,35 @@
+create table info_pessoais_aluno (
+cpf varchar(10) primary key not null,
+nome varchar(100) not null,
+tel_respon varchar(50) not null,
+tel_residen varchar(50) not null,
+email_respon varchar(100) not null
+);
+
+create table aluno (
+num_matricula bigint auto_increment primary key not null,
+data_inicio date not null,
+emai_educacional varchar(50) not null,
+constraint fk_info_pessoais_aluno_aluno foreign key (cpf) REFERENCES info_pessoais_aluno(cpf)
+);
+
+create table turma (
+codigo_turma bigint auto_increment primary key not null,
+quantidade_alunos int not null check(quantidade_alunos >= 0),
+periodo varchar(40) not null,
+semestre varchar(40) not null,
+status_tur bool default 1,
+constraint fk_aluno_turma foreign key (cpf) references aluno(cpf)
+);
+
+create table curso (
+codigo_curso bigint auto_increment primary key not null,
+nome varchar(80) not null,
+carga_horaria int not null check(carga_horaria >= 0),
+curso_status bool default 1
+);
+create table matricula (
+constraint fk_turma_matricula foreign key (codigo_turma) REFERENCES turma(codigo_turma),
+constraint fk_curso_matricula foreign key (codigo_curso) REFERENCES curso(codigo_curso),
+constraint fk_aluno_matricula foreign key (num_matricula) REFERENCES aluno(num_matricula)
+);
